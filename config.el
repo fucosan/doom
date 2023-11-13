@@ -1,4 +1,4 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; $DOOMDIR/config.el -*- lexical-binding: -
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -6,7 +6,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
+(setq user-full-name "Kamal"
       user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
@@ -21,7 +21,7 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "Fira Code" :size 25 :weight 'semi-light)
+(setq doom-font (font-spec :family "Geist Mono" :size 20 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Fira Sans" :size 15))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -32,7 +32,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-solarized-dark)
+(setq doom-theme 'doom-one)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -40,7 +40,26 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Documents/personal/org/")
+(after! org
+  (setq org-agenda-files '("~/Documents/personal/org/roam/daily"))
+  )
+
+(defun load-roam-dir ()
+  (interactive)
+  (setq org-agenda-files '("~/Documents/personal/org/roam/daily"))
+  )
+
+;; (use-package! org-journal
+;;   ;; :bind
+;;   ;; ("C-c n j" . org-journal-new-entry)
+;;   :custom
+;;   (org-journal-date-prefix "#+title: ")
+;;   (org-journal-file-format "%Y-%m-%d.org")
+;;   (org-journal-dir "/home/kamal/Documents/personal/org/roam/daily/")
+;;   (org-journal-date-format "%A, %d %B %Y"))
+
+
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -86,15 +105,19 @@
 (map! :leader ":" #'eval-expression)
 (map! :leader "w;" #'delete-other-windows)
 (map! :leader "y" #'avy-copy-region)
-(map! :leader "ot" #'shell-command)
+(map! :leader "oi" #'async-shell-command)
+(map! :leader "ot" #'projectile-run-async-shell-command-in-root)
+(map! :leader "[" #'org-roam-node-find)
 
 (define-key evil-normal-state-map (kbd "C-;") 'evil-multiedit-match-all)
 (define-key evil-normal-state-map (kbd "go") #'avy-goto-char-timer)
 (setq-default truncate-lines nil)
 
 
-(after! projectile (setq projectile-project-root-files-bottom-up
-                         (remove ".git" projectile-project-root-files-bottom-up)))
+(after! projectile
+  (setq projectile-project-search-path '("~/project/"))
+  )
+
 (add-hook 'vue-mode-hook #'lsp!)
 (use-package! kubernetes
   :ensure t
@@ -104,3 +127,34 @@
         kubernetes-redraw-frequency 3600))
 
 (use-package! lsp-tailwindcss)
+
+
+(global-display-fill-column-indicator-mode)
+
+(setq avy-all-windows 'all-frames)
+;;(setq avy-timeout-seconds 0.3)
+
+(defun run-vterm ()
+  (interactive)
+  (toggle-frame-fullscreen)
+  (vterm)
+  (delete-other-windows)
+  )
+
+
+
+(defun wifi-available ()
+  (interactive)
+  (async-shell-command "nmcli device wifi list"))
+
+(defun wifi-connect (name)
+  "Connect to a Wi-Fi network using nmcli."
+  (interactive "sEnter the Wi-Fi network name: ")
+  (if (zerop (shell-command (concat "nmcli connection up " (shell-quote-argument name))))
+      (message "Connected to %s" name)
+    (message "Failed to connect to %s" name)))
+
+(defun wifi-status ()
+  (interactive)
+  (shell-command "nmcli -g GENERAL.CONNECTION device show")
+  )
