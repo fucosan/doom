@@ -49,7 +49,10 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t))
 (package! vue-mode)
-(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! lsp-tailwindcss
+  :recipe
+  (:host github
+   :repo "merrickluo/lsp-tailwindcss"))
 (package! daemons)
 (package! ag)
 (package! wgrep)
