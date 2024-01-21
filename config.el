@@ -140,8 +140,6 @@
   (delete-other-windows)
   )
 
-
-
 (defun wifi-available ()
   (interactive)
   (async-shell-command "nmcli device wifi list"))
