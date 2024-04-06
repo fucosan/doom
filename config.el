@@ -108,8 +108,11 @@
 (map! :leader "ot" #'projectile-run-async-shell-command-in-root)
 (map! :leader "[" #'org-roam-node-find)
 
+
+(define-key evil-normal-state-map (kbd "M-y") #'consult-yank-from-kill-ring)
 (define-key evil-normal-state-map (kbd "C-;") 'evil-multiedit-match-all)
 (define-key evil-normal-state-map (kbd "go") #'avy-goto-char-timer)
+
 (setq-default truncate-lines nil)
 
 
