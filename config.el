@@ -174,3 +174,13 @@
 (setq shell-file-name (executable-find "bash"))
 (setq-default vterm-shell (executable-find "fish"))
 (setq-default explicit-shell-file-name (executable-find "fish"))
+
+
+(defun open-org-todo-list ()
+  "Open the org todo list buffer."
+  (interactive)
+  (org-todo-list)
+  (switch-to-buffer "*Org Agenda*")) ; Change "*Org Agenda*" to the actual buffer name if needed
+
+(setq initial-buffer-choice 'open-org-todo-list)
+
