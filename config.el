@@ -36,7 +36,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -104,8 +104,8 @@
 (map! :leader ":" #'eval-expression)
 (map! :leader "w;" #'delete-other-windows)
 (map! :leader "y" #'avy-copy-region)
-(map! :leader "oi" #'async-shell-command)
-(map! :leader "ot" #'projectile-run-async-shell-command-in-root)
+(map! :leader "oo" #'async-shell-command)
+(map! :leader "oi" #'projectile-run-async-shell-command-in-root)
 (map! :leader "[" #'org-roam-node-find)
 
 (define-key evil-normal-state-map (kbd "C-;") 'evil-multiedit-match-all)
@@ -170,3 +170,7 @@
   (if (zerop (async-shell-command (concat "g++ -o a a.cpp && ./a < in" (shell-quote-argument name))))
       (message "compiled %s" name)
     (message "Failed to compiled  %s" name)))
+
+(setq shell-file-name (executable-find "bash"))
+(setq-default vterm-shell (executable-find "fish"))
+(setq-default explicit-shell-file-name (executable-find "fish"))
