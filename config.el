@@ -173,3 +173,24 @@
   (if (zerop (async-shell-command (concat "g++ -o a a.cpp && ./a < in" (shell-quote-argument name))))
       (message "compiled %s" name)
     (message "Failed to compiled  %s" name)))
+
+
+
+(defun copy-node-module-path ()
+  "Put the current file name (relative to 'src' directory) on the clipboard"
+  (interactive)
+  (let* ((src-index (string-match "/src/" buffer-file-name))
+         (filename (if (equal major-mode 'dired-mode)
+                       default-directory
+                     (and src-index (substring buffer-file-name src-index))))
+         (filename (and filename
+                       (if (string-prefix-p "/" filename)
+                           (substring filename 1)
+                         filename))))
+    (when filename
+      (with-temp-buffer
+        (insert filename)
+        (clipboard-kill-region (point-min) (point-max)))
+      (message filename))))
+
+(map! :leader "fo" #'copy-node-module-path)
