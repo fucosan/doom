@@ -20,9 +20,9 @@
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
-;;
-(setq doom-font (font-spec :family "GeistMono Nerd Font" :size 20 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "FiraCode Nerd Font" :size 15))
+;;FiraMono Nerd Font
+(setq doom-font (font-spec :family "Monaco" :size 15 :weight 'semi-light)
+      doom-variable-pitch-font (font-spec :family "FiraMono Nerd Font" :size 15))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -32,7 +32,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-solarized-dark)
+(setq doom-theme 'doom-solarized-light)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -194,3 +194,12 @@
       (message filename))))
 
 (map! :leader "fo" #'copy-node-module-path)
+
+
+(defun open-org-todo-list ()
+  "Open the org todo list buffer."
+  (interactive)
+  (org-todo-list)
+  (switch-to-buffer "*Org Agenda*")) ; Change "*Org Agenda*" to the actual buffer name if needed
+
+(setq initial-buffer-choice 'open-org-todo-list)
